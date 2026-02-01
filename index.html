@@ -81,6 +81,23 @@
     align-items: center;
     cursor: zoom-out;
 }
+		/* Tombol Navigasi di dalam Lightbox */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    padding: 20px;
+    transition: 0.3s;
+}
+.nav-arrow:hover { color: var(--primary); }
+.prev { left: 10px; }
+.next { right: 10px; }
+
 .lightbox img { 
     max-width: 90%; 
     max-height: 90%; 
@@ -113,9 +130,14 @@
 
     <div id="main-display" class="grid">
         </div>
-	<div id="lightbox" class="lightbox" onclick="this.style.display='none'">
-    <img id="lightbox-img" src="">
+	
+	<div id="lightbox" class="lightbox">
+    <span class="close-lightbox" onclick="closeImage()">&times;</span>
+    <span class="nav-arrow prev" onclick="changeImage(-1)">&#10094;</span>
+    <img id="lightbox-img" src="" onclick="event.stopPropagation()">
+    <span class="nav-arrow next" onclick="changeImage(1)">&#10095;</span>
 </div>
+ 
 
 	<script>
     // 1. DATA STRUKTUR FOLDER (Pastikan nama file foto benar)
@@ -191,13 +213,42 @@
             render();
         }
     }
+		
 
-    function openImage(src) {
-        const lb = document.getElementById('lightbox');
-        const lbImg = document.getElementById('lightbox-img');
-        lb.style.display = 'flex';
-        lbImg.src = src;
-    }
+    let currentPhotoIndex = 0;
+let currentPhotoArray = [];
+
+function openImage(src) {
+    const currentFolder = historyStack[historyStack.length - 1];
+    currentPhotoArray = currentFolder.images; // Ambil semua foto di folder aktif
+    currentPhotoIndex = currentPhotoArray.indexOf(src); // Cari urutan foto yang diklik
+
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    
+    lb.style.display = 'flex';
+    lbImg.src = src;
+}
+
+function changeImage(step) {
+    currentPhotoIndex += step;
+
+    // Loop kembali ke awal jika sudah di akhir, atau sebaliknya
+    if (currentPhotoIndex >= currentPhotoArray.length) currentPhotoIndex = 0;
+    if (currentPhotoIndex < 0) currentPhotoIndex = currentPhotoArray.length - 1;
+
+    document.getElementById('lightbox-img').src = currentPhotoArray[currentPhotoIndex];
+}
+
+function closeImage() {
+    document.getElementById('lightbox').style.display = 'none';
+}
+
+// Tambahan: Tutup lightbox jika area hitam diklik
+document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeImage();
+});
+
 
     // Jalankan fungsi render pertama kali
     render();

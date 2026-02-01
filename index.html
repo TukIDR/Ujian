@@ -117,96 +117,91 @@
     <img id="lightbox-img" src="">
 </div>
 
-    <script>
-        // DATA STRUKTUR FOLDER
-        const fileSystem = {
-            name: "File Foto UKK",
-            content: [
-                {
-                    name: "Instalasi Debian",
-                    type: "folder",
-                    content: [
-                        { name: "Instal Debian", type: "gallery", images: ["1.png", "2.png", "3.png,", "4.png","5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png"] },
-                        { name: "Setting IP Debian", type: "gallery", images: ["13.png", "14.png", "15.png", "16.png"] },
-                        { name: "Instal DNS Server Bind9", type: "gallery", images: ["17.png", "18.png", "19.png", "20.png", "21.png", "22.png", "23.png", "24.png", "25.png", "26.png", "27.png", "28.png"] },
-                        { name: "Pengujian DNS Server", type: "gallery", images: ["29.png", "30.png", "31.png"] },
-                        { name: "Instal Web Server Apache2", type: "gallery", images: ["32.png", "33.png", "34.png", "35.png","36.png", "37.png", "38.png", "39.png", "40.png", "41.png", "42.png", "43.png", "44.png", "45.png", "46.png", "47.png", "48.png", "49.png"] },
-                        { name: "Instal Mail Server", type: "gallery", images: ["51.png", "52.png", "53.png", "54.png", "55.png", "56.png", "57.png", "58.png", "59.png", "60.png", "61.png", "62.png", "63.png", "64.png", "65.png", "66.png", "67.png", "68.png", "69.png", "70.png", "71.png", "72.png", "73.png", "74.png", "75.png", "76.png", "77.png", "78.png", "79.png", "80.png", "81.png", "82.png", "83.png", "84.png", "85.png", "86.png", "87.png", "88.png"] },
-                        { name: "Pengujian Mail Server", type: "gallery", images: ["89.png", "90.png", "91.png", "92.png", "93.png", "94.png", "95.png"] }
-                    ]
-                },
-                {
-                    name: "Winbox",
-                    type: "gallery",
-                    images: ["winbox 1.png", "winbox 2.png","winbox 3.png", "winbox 4 baru.png", "winbox 5.png", "winbox 6.png", "winbox 7.png", "winbox 8.png"]
-                }
-            ]
-        };
+	<script>
+    // 1. DATA STRUKTUR FOLDER (Pastikan nama file foto benar)
+    const fileSystem = {
+        name: "File Foto UKK",
+        content: [
+            {
+                name: "Instalasi Debian",
+                type: "folder",
+                content: [
+                    { name: "Instal Debian", type: "gallery", images: ["1.png", "2.png", "3.png,", "4.png","5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png"] },
+                    { name: "Setting IP Debian", type: "gallery", images: ["13.png", "14.png", "15.png", "16.png"] },
+                    { name: "Instal DNS Server Bind9", type: "gallery", images: ["17.png", "18.png", "19.png", "20.png", "21.png", "22.png", "23.png", "24.png", "25.png", "26.png", "27.png", "28.png"] },
+                    { name: "Pengujian DNS Server", type: "gallery", images: ["29.png", "30.png", "31.png"] },
+                    { name: "Instal Web Server Apache2", type: "gallery", images: ["32.png", "33.png", "34.png", "35.png","36.png", "37.png", "38.png", "39.png", "40.png", "41.png", "42.png", "43.png", "44.png", "45.png", "46.png", "47.png", "48.png", "49.png"] },
+                    { name: "Instal Mail Server", type: "gallery", images: ["51.png", "52.png", "53.png", "54.png", "55.png", "56.png", "57.png", "58.png", "59.png", "60.png", "61.png", "62.png", "63.png", "64.png", "65.png", "66.png", "67.png", "68.png", "69.png", "70.png", "71.png", "72.png", "73.png", "74.png", "75.png", "76.png", "77.png", "78.png", "79.png", "80.png", "81.png", "82.png", "83.png", "84.png", "85.png", "86.png", "87.png", "88.png"] },
+                    { name: "Pengujian Mail Server", type: "gallery", images: ["89.png", "90.png", "91.png", "92.png", "93.png", "94.png", "95.png"] }
+                ]
+            },
+            {
+                name: "Winbox",
+                type: "gallery", 
+                images: ["winbox 1.png", "winbox 2.png","winbox 3.png", "winbox 4 baru.png", "winbox 5.png", "winbox 6.png", "winbox 7.png", "winbox 8.png"] // <--- Ganti dengan nama fotomu
+            }
+        ]
+    };
 
-        let historyStack = [fileSystem]; // Untuk melacak jejak klik
+    let historyStack = [fileSystem];
 
-        function render() {
-            const current = historyStack[historyStack.length - 1];
-            const display = document.getElementById('main-display');
-            const btnBack = document.getElementById('btn-back');
-            const pathText = document.getElementById('path-text');
-            const folderTitle = document.getElementById('folder-name');
+    function render() {
+        const current = historyStack[historyStack.length - 1];
+        const display = document.getElementById('main-display');
+        const btnBack = document.getElementById('btn-back');
+        const pathText = document.getElementById('path-text');
+        const folderTitle = document.getElementById('folder-name');
 
-            display.innerHTML = '';
-            folderTitle.innerText = current.name;
-            
-            // Update Path
-            pathText.innerText = historyStack.map(item => item.name).join(" / ");
+        display.innerHTML = ''; // Kosongkan tampilan sebelum isi ulang
+        folderTitle.innerText = current.name;
+        pathText.innerText = historyStack.map(item => item.name).join(" / ");
+        btnBack.style.display = historyStack.length > 1 ? "block" : "none";
 
-            // Tampilkan tombol back jika bukan di folder utama
-            btnBack.style.display = historyStack.length > 1 ? "block" : "none";
-
-            if (current.type === "gallery") {
-                display.className = "photo-grid";
-                if (current.images.length === 0) {
-                    display.innerHTML = `<div class="empty-msg">Belum ada foto di folder ini.</div>`;
-                }
-                current.images.forEach(img => {display.innerHTML += `<imgsrc="${img}" onclick="openImage('${img}')" onerror="this.src='https://via.placeholder.com/150?text=Foto+Tidak+Ada'">`;
-                });
-            } 
-            else {
-                display.className = "grid";
-                if (current.content.length === 0) {
-                    display.innerHTML = `<div class="empty-msg">Folder ini kosong.</div>`;
-                }
-                current.content.forEach((item, index) => {
-                    display.innerHTML += `
-                        <div class="card" onclick="enterFolder(${index})">
-                            <span class="folder-icon">${item.type === 'folder' ? '📂' : '🖼️'}</span>
-                            <span>${item.name}</span>
-                        </div>`;
+        if (current.type === "gallery") {
+            display.className = "photo-grid";
+            if (!current.images || current.images.length === 0) {
+                display.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; color:#94a3b8;">Belum ada foto di folder ini.</div>`;
+            } else {
+                current.images.forEach(img => {
+                    // BAGIAN PENTING: Menampilkan foto dan fungsi klik membesar
+                    display.innerHTML += `<img src="${img}" onclick="openImage('${img}')" onerror="this.src='https://via.placeholder.com/400x300?text=Foto+Tidak+Ditemukan'">`;
                 });
             }
+        } else {
+            display.className = "grid";
+            current.content.forEach((item, index) => {
+                display.innerHTML += `
+                    <div class="card" onclick="enterFolder(${index})">
+                        <span class="folder-icon">${item.type === 'folder' ? '📂' : '🖼️'}</span>
+                        <span>${item.name}</span>
+                    </div>`;
+            });
         }
+    }
 
-        function enterFolder(index) {
-            const current = historyStack[historyStack.length - 1];
-            historyStack.push(current.content[index]);
+    function enterFolder(index) {
+        const current = historyStack[historyStack.length - 1];
+        historyStack.push(current.content[index]);
+        render();
+    }
+
+    function goBack() {
+        if (historyStack.length > 1) {
+            historyStack.pop();
             render();
         }
+    }
 
-        function goBack() {
-            if (historyStack.length > 1) {
-                historyStack.pop();
-                render();
-            }
-        }
+    function openImage(src) {
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightbox-img');
+        lb.style.display = 'flex';
+        lbImg.src = src;
+    }
 
-        // Jalankan saat pertama kali buka
-        render();
+    // Jalankan fungsi render pertama kali
+    render();
+</script>
 
-        // Fungsi untuk membuka foto
-function openImage(src) {
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lightbox-img');
-    lb.style.display = 'flex';
-    lbImg.src = src;}
-
-    </script>
 </body>
 </html>

@@ -100,6 +100,14 @@
     align-items: center;
     justify-content: center;
 }
+/* Pastikan ini ada di bawah .nav-arrow */
+.prev { 
+    left: 20px; /* Menaruh panah di sisi kiri layar */
+}
+
+.next { 
+    right: 20px; /* Menaruh panah di sisi kanan layar */
+}
 
 .nav-arrow:hover { 
     color: white; 
@@ -145,10 +153,12 @@
 	
 	<div id="lightbox" class="lightbox">
     <span class="close-lightbox" onclick="closeImage()">&times;</span>
+    
     <span class="nav-arrow prev" onclick="changeImage(-1)">&#10094;</span>
     <img id="lightbox-img" src="" onclick="event.stopPropagation()">
     <span class="nav-arrow next" onclick="changeImage(1)">&#10095;</span>
 </div>
+
  
 
 	<script>

@@ -30,15 +30,39 @@
             gap: 15px; width: 100%; max-width: 800px; 
         }
 
-        /* Styling Folder & File */
+                /* Styling Folder & File yang sudah diganti jadi Biru */
         .card { 
-            background: white; padding: 15px; border-radius: 12px; 
-            text-align: center; cursor: pointer; transition: 0.3s; 
-            border: 1px solid #e2e8f0;
+            background: #2563eb; /* Warna Biru */
+            padding: 20px 15px; 
+            border-radius: 12px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: var(--primary); }
-        .folder-icon { font-size: 50px; display: block; margin-bottom: 8px; }
-        .card span { font-size: 0.85rem; font-weight: 600; color: #334155; display: block; line-height: 1.2; }
+
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 15px rgba(37, 99, 235, 0.4); 
+            background: #1d4ed8; /* Biru lebih gelap saat disentuh */
+        }
+
+        .folder-icon { 
+            font-size: 50px; 
+            display: block; 
+            margin-bottom: 8px; 
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        }
+
+        .card span { 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            color: #ffffff; /* Teks jadi Putih agar kontras dengan biru */
+            display: block; 
+            line-height: 1.2; 
+        }
+
 
         /* Gallery */
         .photo-grid { columns: 2; column-gap: 10px; width: 100%; max-width: 800px; }

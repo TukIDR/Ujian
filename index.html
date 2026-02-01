@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arsip Foto UKK</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --folder-color: #ffca28;
+            --bg: #f8fafc;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        
+        /* Header Profil */
+        .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 800px; }
+        .profile-pic { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { font-size: 1.5rem; color: #1e293b; margin: 10px 0 5px; }
+
+        /* Navigasi / Breadcrumb */
+        .nav-bar { width: 100%; max-width: 800px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .back-btn { background: #fff; border: 1px solid #ddd; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .back-btn:hover { background: #f1f5f9; }
+        .path { color: #64748b; font-size: 0.9rem; }
+
+        /* Container Utama */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+            gap: 15px; width: 100%; max-width: 800px; 
+        }
+
+        /* Styling Folder & File */
+        .card { 
+            background: white; padding: 15px; border-radius: 12px; 
+            text-align: center; cursor: pointer; transition: 0.3s; 
+            border: 1px solid #e2e8f0;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: var(--primary); }
+        .folder-icon { font-size: 50px; display: block; margin-bottom: 8px; }
+        .card span { font-size: 0.85rem; font-weight: 600; color: #334155; display: block; line-height: 1.2; }
+
+        /* Gallery */
+        .photo-grid { columns: 2; column-gap: 10px; width: 100%; max-width: 800px; }
+        .photo-grid img { width: 100%; border-radius: 10px; margin-bottom: 10px; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .empty-msg { grid-column: 1/-1; color: #94a3b8; text-align: center; padding: 40px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="profil.jpg" alt="Foto Profil" class="profile-pic">
+        <h1 id="folder-name">File Foto UKK</h1>
+    </div>
+
+    <div class="nav-bar">
+        <button id="btn-back" class="back-btn" onclick="goBack()" style="display: none;">⬅ Kembali</button>
+        <div class="path" id="path-text">Home / File Foto UKK</div>
+    </div>
+
+    <div id="main-display" class="grid">
+        </div>
+
+    <script>
+        // DATA STRUKTUR FOLDER
+        const fileSystem = {
+            name: "File Foto UKK",
+            content: [
+                {
+                    name: "Instalasi Debian",
+                    type: "folder",
+                    content: [
+                        { name: "Instal Debian", type: "gallery", images: ["deb1.jpg", "deb2.jpg"] },
+                        { name: "Setting IP Debian", type: "gallery", images: ["ip1.jpg"] },
+                        { name: "Instal DNS Server Bind9", type: "gallery", images: [] },
+                        { name: "Pengujian DNS Server", type: "gallery", images: [] },
+                        { name: "Instal Web Server Apache2", type: "gallery", images: [] },
+                        { name: "Instal Mail Server", type: "gallery", images: [] },
+                        { name: "Pengujian Mail Server", type: "gallery", images: [] }
+                    ]
+                },
+                {
+                    name: "Winbox",
+                    type: "folder",
+                    content: []
+                }
+            ]
+        };
+
+        let historyStack = [fileSystem]; // Untuk melacak jejak klik
+
+        function render() {
+            const current = historyStack[historyStack.length - 1];
+            const display = document.getElementById('main-display');
+            const btnBack = document.getElementById('btn-back');
+            const pathText = document.getElementById('path-text');
+            const folderTitle = document.getElementById('folder-name');
+
+            display.innerHTML = '';
+            folderTitle.innerText = current.name;
+            
+            // Update Path
+            pathText.innerText = historyStack.map(item => item.name).join(" / ");
+
+            // Tampilkan tombol back jika bukan di folder utama
+            btnBack.style.display = historyStack.length > 1 ? "block" : "none";
+
+            if (current.type === "gallery") {
+                display.className = "photo-grid";
+                if (current.images.length === 0) {
+                    display.innerHTML = `<div class="empty-msg">Belum ada foto di folder ini.</div>`;
+                }
+                current.images.forEach(img => {
+                    display.innerHTML += `<img src="${img}" onerror="this.src='https://via.placeholder.com/400x300?text=Foto+Belum+Ada'">`;
+                });
+            } else {
+                display.className = "grid";
+                if (current.content.length === 0) {
+                    display.innerHTML = `<div class="empty-msg">Folder ini kosong.</div>`;
+                }
+                current.content.forEach((item, index) => {
+                    display.innerHTML += `
+                        <div class="card" onclick="enterFolder(${index})">
+                            <span class="folder-icon">${item.type === 'folder' ? '📂' : '🖼️'}</span>
+                            <span>${item.name}</span>
+                        </div>`;
+                });
+            }
+        }
+
+        function enterFolder(index) {
+            const current = historyStack[historyStack.length - 1];
+            historyStack.push(current.content[index]);
+            render();
+        }
+
+        function goBack() {
+            if (historyStack.length > 1) {
+                historyStack.pop();
+                render();
+            }
+        }
+
+        // Jalankan saat pertama kali buka
+        render();
+    </script>
+</body>
+</html>

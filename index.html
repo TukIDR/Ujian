@@ -113,6 +113,9 @@
 
     <div id="main-display" class="grid">
         </div>
+	<div id="lightbox" class="lightbox" onclick="this.style.display='none'">
+    <img id="lightbox-img" src="">
+</div>
 
     <script>
         // DATA STRUKTUR FOLDER
@@ -163,10 +166,10 @@
                 if (current.images.length === 0) {
                     display.innerHTML = `<div class="empty-msg">Belum ada foto di folder ini.</div>`;
                 }
-                current.images.forEach(img => {
-                    display.innerHTML += `<img src="${img}" onerror="this.src='https://via.placeholder.com/400x300?text=Foto+Belum+Ada'">`;
+                current.images.forEach(img => {display.innerHTML += `<imgsrc="${img}" onclick="openImage('${img}')" onerror="this.src='https://via.placeholder.com/150?text=Foto+Tidak+Ada'">`;
                 });
-            } else {
+            } 
+            else {
                 display.className = "grid";
                 if (current.content.length === 0) {
                     display.innerHTML = `<div class="empty-msg">Folder ini kosong.</div>`;
@@ -196,6 +199,14 @@
 
         // Jalankan saat pertama kali buka
         render();
+
+        // Fungsi untuk membuka foto
+function openImage(src) {
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    lb.style.display = 'flex';
+    lbImg.src = src;}
+
     </script>
 </body>
 </html>
